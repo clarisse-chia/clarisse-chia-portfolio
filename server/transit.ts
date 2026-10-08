@@ -1,6 +1,6 @@
 import bindings from 'gtfs-realtime-bindings';
 import { HUBS, normalizeRoute, stationForStop, type Arrival, type ArrivalResponse, type Hub } from '../src/data/transit.js';
-import stops from './stops.json';
+import stops from './stops.json' with {type:'json'};
 const {transit_realtime:rt}=bindings;
 const names=stops as Record<string,string>;
 export type Feed={header:{timestamp?:unknown};entity?:any[]};
