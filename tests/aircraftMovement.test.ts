@@ -1,0 +1,5 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {aircraftMovement,movementDescription} from '../src/data/aircraftMovement';
+test('vertical movement colors use a 300 ft/min threshold with the correct sign',()=>{assert.equal(aircraftMovement({verticalRate:-300}),'descending');assert.equal(aircraftMovement({verticalRate:-1500}),'descending');assert.equal(aircraftMovement({verticalRate:300}),'climbing');assert.equal(aircraftMovement({verticalRate:2000}),'climbing');for(const verticalRate of [-299,0,299])assert.equal(aircraftMovement({verticalRate}),'level-unknown');});
+test('missing or invalid movement stays neutral and does not become an arrival or departure',()=>{for(const verticalRate of [null,NaN,Infinity]){assert.equal(aircraftMovement({verticalRate}),'level-unknown');assert.equal(movementDescription({verticalRate}),'Vertical movement not reported');}assert.equal(movementDescription({verticalRate:0}),'Level / small altitude change');assert.equal(movementDescription({verticalRate:-500}),'Descending');});

@@ -1,0 +1,347 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-08T17:15:59.579Z",
+  "unitTestsPassed": 37,
+  "defaultPage": "A New York View",
+  "navigationOrder": [
+    "A New York View",
+    "The Underground",
+    "Above the City"
+  ],
+  "neighborhoodsChecked": 10,
+  "routeFiltersChecked": 22,
+  "stationPicker": true,
+  "stationNamedArrivals": true,
+  "keyboardSelection": true,
+  "unavailableState": true,
+  "hubFeeds": {
+    "times-square": {
+      "status": "live",
+      "count": 364,
+      "stations": [
+        "42 St–Port Authority",
+        "42 St–Bryant Pk / 5 Av",
+        "Times Sq–42 St"
+      ],
+      "routes": [
+        "C",
+        "D",
+        "A",
+        "E",
+        "Q",
+        "R",
+        "7",
+        "F",
+        "M",
+        "W",
+        "3",
+        "1",
+        "B",
+        "N",
+        "2"
+      ]
+    },
+    "union-square": {
+      "status": "live",
+      "count": 172,
+      "stations": [
+        "14 St–Union Sq",
+        "3 Av"
+      ],
+      "routes": [
+        "R",
+        "Q",
+        "6",
+        "N",
+        "L",
+        "4",
+        "5",
+        "W"
+      ]
+    },
+    "yankee-stadium": {
+      "status": "live",
+      "count": 52,
+      "stations": [
+        "161 St–Yankee Stadium"
+      ],
+      "routes": [
+        "4",
+        "D",
+        "B"
+      ]
+    },
+    "jackson-heights": {
+      "status": "live",
+      "count": 144,
+      "stations": [
+        "82 St–Jackson Hts",
+        "Roosevelt Av / 74 St–Broadway"
+      ],
+      "routes": [
+        "7",
+        "M",
+        "R",
+        "F",
+        "E"
+      ]
+    },
+    "broadway-junction": {
+      "status": "live",
+      "count": 103,
+      "stations": [
+        "Broadway Junction",
+        "Alabama Av",
+        "Atlantic Av · L"
+      ],
+      "routes": [
+        "C",
+        "J",
+        "L",
+        "A"
+      ]
+    },
+    "hoyt-schermerhorn": {
+      "status": "live",
+      "count": 312,
+      "stations": [
+        "Jay St–MetroTech",
+        "Hoyt–Schermerhorn",
+        "Hoyt St · 2 / 3",
+        "Borough Hall / Court St"
+      ],
+      "routes": [
+        "A",
+        "2",
+        "3",
+        "G",
+        "4",
+        "R",
+        "C",
+        "5",
+        "F"
+      ]
+    },
+    "williamsburg": {
+      "status": "live",
+      "count": 42,
+      "stations": [
+        "Graham Av",
+        "Lorimer St / Metropolitan Av"
+      ],
+      "routes": [
+        "L",
+        "G"
+      ]
+    },
+    "long-island-city": {
+      "status": "live",
+      "count": 237,
+      "stations": [
+        "Court Sq / Court Sq–23 St",
+        "Queens Plaza",
+        "Queensboro Plaza"
+      ],
+      "routes": [
+        "E",
+        "F",
+        "W",
+        "7",
+        "N",
+        "R",
+        "G"
+      ]
+    },
+    "lower-manhattan": {
+      "status": "live",
+      "count": 322,
+      "stations": [
+        "Fulton St",
+        "Cortlandt St · R / W",
+        "WTC / Chambers St / Park Place",
+        "WTC Cortlandt · 1"
+      ],
+      "routes": [
+        "C",
+        "W",
+        "R",
+        "3",
+        "E",
+        "1",
+        "A",
+        "J",
+        "4",
+        "2",
+        "5"
+      ]
+    },
+    "harlem": {
+      "status": "live",
+      "count": 134,
+      "stations": [
+        "125 St · St Nicholas Av",
+        "125 St · Lenox Av"
+      ],
+      "routes": [
+        "D",
+        "C",
+        "2",
+        "A",
+        "3",
+        "B"
+      ]
+    }
+  },
+  "responsiveWidths": [
+    360,
+    390,
+    768
+  ],
+  "browserErrors": [],
+  "routeTraceChecks": {
+    "checkedAt": "2026-10-08T17:35:34.464Z",
+    "routesChecked": 22,
+    "labelOcclusion": false,
+    "routeToggle": true,
+    "clearRoute": true,
+    "compatibleHubSelection": true,
+    "keyboard": true,
+    "reducedMotion": true,
+    "mobileWidths": [
+      360,
+      390,
+      768
+    ],
+    "browserErrors": []
+  },
+  "liveAircraftChecks": {
+    "checkedAt": "2026-10-08T19:23:58.897Z",
+    "liveFeed": {
+      "provider": "ADSB.lol",
+      "aircraft": 64,
+      "updatedAt": 1791487436,
+      "nearby": {
+        "JFK": 11,
+        "LGA": 24,
+        "EWR": 19
+      }
+    },
+    "freeFeed": true,
+    "refreshSeconds": 60,
+    "providerRetryAfter": true,
+    "noAirportFilterFetches": true,
+    "pause": true,
+    "staleAndEmptyStates": true,
+    "explicitDemo": true,
+    "observedTrails": true,
+    "keyboard": true,
+    "responsiveWidths": [
+      360,
+      390,
+      768
+    ],
+    "browserErrors": []
+  },
+  "aircraftMovementChecks": {
+    "checkedAt": "2026-10-08T19:47:27.278Z",
+    "liveCounts": {
+      "descending": 19,
+      "climbing": 15,
+      "level-unknown": 19
+    },
+    "colors": true,
+    "filters": true,
+    "neutralMissingRate": true,
+    "selectedColorPreserved": true,
+    "keyboard": true,
+    "noExtraRequests": true,
+    "responsiveWidths": [
+      360,
+      390,
+      768
+    ],
+    "browserErrors": []
+  },
+  "forecastChecks": {
+    "checkedAt": "2026-10-08T20:04:03.058Z",
+    "title": "A New York View",
+    "liveForecastHours": 168,
+    "liveForecastDays": 7,
+    "dayCards": true,
+    "dailyHighLow": true,
+    "hourSelection": true,
+    "forecastDrivenScene": true,
+    "noManualWeather": true,
+    "noExtraRequests": true,
+    "nyTimeAndDST": "covered by weather unit tests",
+    "unavailableState": true,
+    "keyboard": true,
+    "responsiveWidths": [
+      360,
+      390,
+      768
+    ],
+    "browserErrors": []
+  },
+  "sceneAndInteractionChecks": {
+    "checkedAt": "2026-10-08T20:15:19.146Z",
+    "recognizableSkyline": true,
+    "umbrellasAndCorgi": true,
+    "animationPause": true,
+    "unifiedWeather": true,
+    "defaultCurrentTime": true,
+    "resetToNow": true,
+    "noSelectionRequests": true,
+    "weatherFailure": true,
+    "responsiveWidths": [
+      360,
+      390,
+      768
+    ],
+    "neighborhoodSelection": true,
+    "keyboardFocus": true,
+    "browserErrors": []
+  },
+  "portfolioIdentityChecks": {
+    "checkedAt": "2026-10-08T20:18:42.950Z",
+    "name": "Clarisse Chia",
+    "exactTagline": true,
+    "metadata": true,
+    "projectSwitching": true,
+    "mobileAbout": true,
+    "responsiveWidths": [
+      360,
+      390,
+      768
+    ],
+    "browserErrors": []
+  },
+  "portfolioCleanupChecks": {
+    "checkedAt": "2026-10-08T20:24:24.243Z",
+    "noDuplicateProjectLinks": true,
+    "headerSocialIcons": true,
+    "singleFont": true,
+    "responsiveWidths": [
+      360,
+      390,
+      768
+    ],
+    "browserErrors": []
+  },
+  "liveOnlyChecks": {
+    "checkedAt": "2026-10-08T20:29:41.896Z",
+    "palette": "Moss & cream",
+    "visibleNameOccurrences": 1,
+    "liveOnly": true,
+    "legacyDemoUrlsUseLive": true,
+    "transitRetry": true,
+    "partialStaleEmptyStates": true,
+    "aircraftRateLimits": true,
+    "responsiveWidths": [
+      360,
+      390,
+      768
+    ],
+    "browserErrors": []
+  }
+}

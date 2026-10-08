@@ -1,0 +1,24 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {HUBS,ROUTES,normalizeRoute,displayDirection} from '../src/data/transit';
+import {parseFeed,seconds,freshFeed} from '../server/transit';
+import stops from '../server/stops.json';
+const now=1800000000;const hub=HUBS[0];
+function feed(overrides:any={}){return {header:{timestamp:now},entity:[{id:'one',tripUpdate:{trip:{tripId:'trip-1',routeId:'1',...overrides.trip},stopTimeUpdate:overrides.stops??[{stopId:'127N',arrival:{time:now+120}},{stopId:'101N',arrival:{time:now+900}}]}}]};}
+test('ten neighborhood clusters cover exactly 22 non-shuttle route IDs across four boroughs',()=>{assert.equal(HUBS.length,10);assert.equal(new Set(HUBS.map(h=>h.borough)).size,4);assert.equal(ROUTES.length,22);assert.deepEqual([...new Set(HUBS.flatMap(h=>h.routes))].sort(),[...ROUTES].sort());});
+test('every configured platform exists in the downloaded official stop dictionary',()=>{for(const h of HUBS)for(const stop of h.stops){assert.ok((stops as Record<string,string>)[`${stop}N`],stop);assert.ok((stops as Record<string,string>)[`${stop}S`],stop);}});
+test('express route IDs normalize, shuttle and railroad IDs are excluded',()=>{assert.equal(normalizeRoute('7X'),'7');assert.equal(normalizeRoute('FX'),'F');assert.equal(normalizeRoute('S'),null);assert.equal(normalizeRoute('SI'),null);});
+test('arrival uses correct hub, platform direction, timestamp and terminal name',()=>{const result=parseFeed(feed(),hub,now);assert.equal(result.length,1);assert.equal(result[0].route,'1');assert.equal(result[0].direction,'N');assert.equal(result[0].time,now+120);assert.equal(result[0].destination,(stops as Record<string,string>)['101N']);});
+test('canceled trains and skipped/no-data station calls do not create ETAs',()=>{assert.equal(parseFeed(feed({trip:{scheduleRelationship:3}}),hub,now).length,0);for(const relationship of [1,2])assert.equal(parseFeed(feed({stops:[{stopId:'127N',scheduleRelationship:relationship,arrival:{time:now+120}}]}),hub,now).length,0);});
+test('other stations, past predictions and far-future predictions are excluded',()=>{assert.equal(parseFeed(feed({stops:[{stopId:'128N',arrival:{time:now+120}},{stopId:'127S',arrival:{time:now-60}},{stopId:'127N',arrival:{time:now+99999}}]}),hub,now).length,0);});
+test('missing arrival can use a provided departure prediction without inventing a time',()=>{const result=parseFeed(feed({stops:[{stopId:'127S',departure:{time:now+90}}]}),hub,now);assert.equal(result.length,1);assert.equal(result[0].time,now+90);assert.equal(parseFeed(feed({stops:[{stopId:'127S'}]}),hub,now).length,0);});
+test('G route is parsed at Hoyt–Schermerhorn',()=>{const h=HUBS.find(h=>h.id==='hoyt-schermerhorn')!;const result=parseFeed(feed({trip:{routeId:'G'},stops:[{stopId:'A42N',arrival:{time:now+100}},{stopId:'G22N',arrival:{time:now+900}}]}),h,now);assert.equal(result[0].route,'G');});
+test('numeric protobuf timestamps convert reliably',()=>{assert.equal(seconds({toString:()=>String(now)}),now);assert.equal(seconds(undefined),0);assert.equal(seconds('invalid'),0);});
+
+test('stale, missing and future feed timestamps are rejected',()=>{assert.equal(freshFeed(now-181,now),false);assert.equal(freshFeed(0,now),false);assert.equal(freshFeed(now+61,now),false);assert.equal(freshFeed(now-20,now),true);});
+test('J and Z destination groups align geographically at Broadway Junction',()=>{const h=HUBS.find(h=>h.id==='broadway-junction')!;assert.equal(displayDirection({route:'J',direction:'N'},h),'S');assert.equal(displayDirection({route:'A',direction:'N'},h),'N');});
+test('7 uses the shared numbered-line feed',()=>{for(const h of HUBS.filter(h=>h.routes.includes('7'))){assert.ok(h.feeds.includes(''));assert.ok(!h.feeds.includes('-7'));}});
+
+test('each stop has exactly one station owner within its neighborhood',()=>{for(const h of HUBS){const all=h.stations.flatMap(s=>s.stops);assert.equal(new Set(all).size,all.length,h.id);assert.equal(h.stations[0].walkMinutes,0);assert.ok(h.stations.every(s=>s.walkMinutes>=0&&s.walkMinutes<=10));}});
+test('same train at two neighborhood stations retains both named arrivals',()=>{const input=feed({trip:{routeId:'7'},stops:[{stopId:'725N',arrival:{time:now+60}},{stopId:'724N',arrival:{time:now+180}},{stopId:'701N',arrival:{time:now+900}}]});const rows=parseFeed(input,hub,now);assert.equal(rows.length,2);assert.notEqual(rows[0].id,rows[1].id);assert.equal(rows[0].stationName,'Times Sq–42 St');assert.equal(rows[1].stationId,'bryant-park');assert.equal(rows[1].stationName,'42 St–Bryant Pk / 5 Av');});
+test('neighborhood routes and feeds derive from their member stations',()=>{for(const h of HUBS){assert.deepEqual([...new Set(h.stations.flatMap(s=>s.routes))].sort(),[...h.routes].sort());assert.equal(new Set(h.feeds).size,h.feeds.length);}});
