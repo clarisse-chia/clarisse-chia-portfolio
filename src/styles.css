@@ -29,4 +29,5 @@
 
 /* Decluttered personal shell: identity once, direct view tabs, live data only. */
 .site-header{justify-content:flex-end;height:72px}.portfolio-hero{padding:37px 0 43px}.work-intro{padding:24px 0 20px}.work-intro>p:empty{display:none}.project-tabs{margin-bottom:28px}.project-tab{padding:17px 20px;gap:12px}.project-tab strong{font-size:12px}.project-section{padding-bottom:35px}.route-directory .eyebrow{margin-bottom:0}
+.flight-marker:focus,.flight-marker:focus-visible{outline:none!important}.flight-keyboard-focus{opacity:0;pointer-events:none}.flight-marker:focus-visible .flight-keyboard-focus{opacity:1}
 @media(max-width:720px){.site-header{height:62px}.portfolio-hero{padding:26px 0 30px}.project-tab{flex-direction:row;align-items:center;padding:15px 10px;gap:8px}.project-tab strong{font-size:10px;max-width:none}.project-heading{margin-bottom:17px}.project-tabs{margin-bottom:23px}}
