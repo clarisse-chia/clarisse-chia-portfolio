@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#101412"/><path d="M7 23V11h5v12m3 0V6h5v17m3 0V14h3v9" fill="none" stroke="#b4d6a7" stroke-width="3"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <title>Clarisse Chia — a small sprout</title>
+  <rect width="32" height="32" rx="6" fill="#101412"/>
+  <path fill="#b8d3a5" d="M15 14h-3v-2H8V7h5v2h2v5Zm2-2h2V9h2V7h5v5h-3v2h-6v-2Z"/>
+  <path fill="#e5e3c9" d="M15 13h3v12h-3zM10 25h13v2H10z"/>
+</svg>
