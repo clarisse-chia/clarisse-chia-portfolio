@@ -1,6 +1,7 @@
 import type {Season,Sky,Light} from '../data/weather';
-export type SceneOptions={season:Season;sky:Sky;light:Light};
-export function drawNYCScene(ctx:CanvasRenderingContext2D,{season,sky,light}:SceneOptions,t:number){
+export type SceneOptions={season:Season;sky:Sky;light:Light;greeting?:boolean};
+export function dogWalkerX(t:number){const cycle=t%18000;const walkTime=Math.floor(t/18000)*15000+Math.min(cycle,15000);const x=178+(walkTime/220)%470;return x>424?x-470:x;}
+export function drawNYCScene(ctx:CanvasRenderingContext2D,{season,sky,light,greeting=false}:SceneOptions,t:number){
  ctx.imageSmoothingEnabled=false;
  const px=(x:number,y:number,w:number,h:number,c:string)=>{ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h);};
  const night=light==='night',warm=light==='dawn'||light==='dusk',wet=sky==='Rain'||sky==='Storm';
@@ -15,11 +16,13 @@ export function drawNYCScene(ctx:CanvasRenderingContext2D,{season,sky,light}:Sce
   const x=((i*119+t/1100+38)%480)-65,y=24+i%3*16,c=night?'#3e4e60':overcast?'#a4b6b7':'#e0e6d5';
   px(x,y,36,5,c);px(x+6,y-4,25,5,c);px(x+13,y-8,11,5,c);
  }
+ // Gulls drift above the river in dry weather.
+ if(!wet&&sky!=='Snow')for(let i=0;i<2;i++){const gx=(t/100+i*47)%430-20,gy=91+i*9;const wing=Math.floor(t/350)%2;px(gx,gy,1,1,'#e3e5d3');px(gx-3,gy-wing,3,1,'#e3e5d3');px(gx+1,gy-wing,3,1,'#e3e5d3');}
  const distant=night?'#364a56':warm?'#a49394':'#8ca8a7';
  for(let i=0;i<40;i++){const height=12+(i*19)%29;px(i*10-4,151-height,9,height,distant);}
  const body=night?'#28434d':warm?'#657981':'#577e86',side=night?'#1c333e':warm?'#4d646c':'#3e666f';
  const trim=night?'#819190':warm?'#c3b19c':'#b7c5b9';
- const window=(x:number,y:number,i:number)=>{px(x,y,1,2,night||warm?(i%4?'#e2ca8c':'#536568'):'#adc7bd');};
+ const window=(x:number,y:number,i:number)=>{px(x,y,1,2,night||warm?((i+Math.floor(t/8000))%4?'#e2ca8c':'#536568'):'#adc7bd');};
  function block(x:number,top:number,w:number,seed:number){px(x,top,w,154-top,body);px(x+w-4,top,4,154-top,side);px(x+2,top-3,w-4,3,body);for(let yy=top+5;yy<150;yy+=6)for(let xx=x+3;xx<x+w-5;xx+=4)window(xx,yy,xx+yy+seed);}
  // South (left) to north (right), compressed into an original East River panorama.
  for(const [i,b] of [[2,109,13],[18,96,17],[38,116,16],[82,91,19],[104,107,16],[124,118,13],[143,126,18],[167,111,15],[186,92,19],[207,107,15],[247,103,18],[265,117,15],[303,112,15],[355,94,17],[374,112,14]].entries())block(b[0],b[1],b[2],i);
@@ -63,7 +66,7 @@ export function drawNYCScene(ctx:CanvasRenderingContext2D,{season,sky,light}:Sce
  px(104,191,23,3,'#9a805b');px(106,185,19,3,'#ad9165');px(108,188,2,11,side);px(121,188,2,11,side);
  for(const x of [85,314]){px(x,174,2,24,night?'#8e9b88':'#5b7570');px(x-2,169,6,6,night?'#edd49a':'#b4c4aa');px(x-3,168,8,1,side);}
  if(wet){for(const x of [64,149,277]){px(x,210,19,1,'#a5bbba');px(x+4,212,12,1,'#b6c9c5');}}
- const humanA=95+((t/240)%470)-40,humanB=218+((t/220)%470)-40;
+ const humanA=95+((t/240)%470)-40,humanB=dogWalkerX(t);
  const aX=humanA>424?humanA-470:humanA,bX=humanB>424?humanB-470:humanB;
  if(wet||sky==='Snow')for(let i=0;i<92;i++){
   const x=((i*59+t/(sky==='Snow'?150:120))%404)-10,y=(i*31+t/(sky==='Snow'?80:14))%216;
@@ -72,10 +75,10 @@ export function drawNYCScene(ctx:CanvasRenderingContext2D,{season,sky,light}:Sce
  }
  const gait=Math.floor(t/210)%2;
  function umbrella(x:number,color:string){px(x-4,172,8,2,color);px(x-9,174,18,3,color);px(x-12,177,24,4,color);px(x-13,180,26,2,color);for(let k=-10;k<12;k+=7)px(x+k,182,4,1,color);px(x,172,1,1,'#e2d6ad');px(x,176,1,6,'#e4cfa4');px(x,183,1,13,'#dac9a7');px(x,195,3,1,'#dac9a7');}
- function person(x:number,coat:string,canopy:string,dog=false){const bob=gait;px(x-2,188+bob,5,5,'#d7b69b');px(x-2,187+bob,5,2,'#544139');px(x-3,193+bob,7,8,coat);px(x-5,194+bob,2,5,coat);px(x+4,194+bob,2,4,coat);px(x-2-gait,201,2,6,'#283d45');px(x+2+gait,201,2,6,'#283d45');px(x-3-gait,207,3,1,'#d0c4a5');px(x+2+gait,207,3,1,'#d0c4a5');
+ function person(x:number,coat:string,canopy:string,dog=false){const bob=gait;px(x-2,188+bob,5,5,'#d7b69b');px(x-2,187+bob,5,2,'#544139');px(x-3,193+bob,7,8,coat);px(x-5,194+bob,2,5,coat);px(x+4,194+bob,2,4,coat);if(season==='Winter'){px(x-3,192+bob,7,2,'#e0bd64');px(x+2,194+bob,2,4,'#e0bd64');}px(x-2-gait,201,2,6,'#283d45');px(x+2+gait,201,2,6,'#283d45');px(x-3-gait,207,3,1,'#d0c4a5');px(x+2+gait,207,3,1,'#d0c4a5');
   if(dog){const dx=x+21,dy=200+bob;ctx.strokeStyle='#d8b985';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(Math.round(x+5),198+bob);ctx.lineTo(Math.round(dx-2),dy+2);ctx.stroke();
    // A cream-chested corgi with upright ears, a scarf/collar and little alternating paws.
-   px(dx-6,dy+1,10,5,'#c99760');px(dx+2,dy-2,6,6,'#d5aa73');px(dx+2,dy-5,2,4,'#bb8959');px(dx+6,dy-5,2,4,'#bb8959');px(dx+4,dy+1,5,3,'#f0dfb6');px(dx+7,dy,1,1,'#263b3b');px(dx+9,dy+2,1,2,'#293d3b');px(dx+1,dy+3,3,3,'#efdeb8');px(dx-5-gait,dy+6,2,2,'#f0dfb6');px(dx+1+gait,dy+6,2,2,'#f0dfb6');px(dx-9,dy+(gait?0:2),4,2,'#d7b17c');px(dx+1,dy+2,2,2,'#b36b5c');if(wet){px(dx-6,dy,9,3,'#e0bd64');px(dx-5,dy,7,1,'#f0d887');}
+   px(dx-6,dy+1,10,5,'#c99760');px(dx+2,dy-2,6,6,'#d5aa73');px(dx+2,dy-5,2,4,'#bb8959');px(dx+6,dy-5,2,4,'#bb8959');px(dx+4,dy+1,5,3,'#f0dfb6');px(dx+7,dy,1,1,'#263b3b');px(dx+9,dy+2,1,2,'#293d3b');px(dx+1,dy+3,3,3,'#efdeb8');px(dx-5-gait,dy+6,2,2,'#f0dfb6');px(dx+1+gait,dy+6,2,2,'#f0dfb6');px(dx-9,dy+((greeting?Math.floor(t/75)%2:gait)?0:2),4,2,'#d7b17c');if(greeting){px(dx,dy-13,2,2,'#d59580');px(dx+3,dy-13,2,2,'#d59580');px(dx+1,dy-11,3,2,'#d59580');px(dx+2,dy-9,1,1,'#d59580');}px(dx+1,dy+2,2,2,'#b36b5c');if(wet){px(dx-6,dy,9,3,'#e0bd64');px(dx-5,dy,7,1,'#f0d887');}
   }
   if(wet)umbrella(x,canopy);
  }
