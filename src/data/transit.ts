@@ -24,7 +24,7 @@ export const HUBS:Hub[] = [
  cluster({id:'harlem',name:'Harlem / West 125th Street',shortName:'Harlem',borough:'Manhattan',x:486,y:191,labelX:25,labelY:126,directions:{N:'Uptown / The Bronx',S:'Downtown / Brooklyn'},note:'Anchor: 125 St at St Nicholas Avenue. The Lenox Avenue 2/3 station is a separate station east along 125th Street. The farther Lexington Avenue 4/5/6 station is intentionally excluded.',stations:[station('125-st-nicholas','125 St · St Nicholas Av',['A','B','C','D'],['A15']),station('125-lenox','125 St · Lenox Av',['2','3'],['225'],10)]})
 ];
 export function stationForStop(hub:Hub,stopId:string):Station|undefined{return hub.stations.find(s=>s.stops.includes(stopId.replace(/[NS]$/,'')));}
-export type Arrival={id:string;route:Route;express:boolean;direction:Direction;destination:string;time:number;stopId:string;stationId:string;stationName:string};
+export type Arrival={id:string;route:Route;express:boolean;direction:Direction;travelDirection?:string;remainingStops?:string[];remainingTimes?:Record<string,number>;destination:string;time:number;stopId:string;stationId:string;stationName:string};
 export type ArrivalResponse={hubId:string;arrivals:Arrival[];status:'live'|'partial'|'unavailable';updatedAt:number|null;fetchedAt:number;missingFeeds:number;message?:string};
 export function normalizeRoute(route:string):Route|null { const v=route.replace(/X$/,'');return ROUTES.includes(v as Route)?v as Route:null; }
 export function displayDirection(arrival:Pick<Arrival,'route'|'direction'>,hub:Hub):Direction {

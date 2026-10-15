@@ -1,3 +1,5 @@
+import {travelDirection} from './subwayDirection.js';
+import {networkHub} from '../src/data/subwayNetwork.js';
 import bindings from 'gtfs-realtime-bindings';
 import { HUBS, normalizeRoute, stationForStop, type Arrival, type ArrivalResponse, type Hub } from '../src/data/transit.js';
 import stops from './stops.json' with {type:'json'};
@@ -23,7 +25,9 @@ export function parseFeed(feed:Feed,hub:Hub,now:number):Arrival[] {
    const time=seconds(s.arrival?.time??s.departure?.time);
    if(time<now-20||time>now+7200)continue;
    const id=`${trip.tripId??entity.id}-${stopId}`;if(unique.has(id))continue;unique.add(id);
-   rows.push({id,route,express:(trip.routeId??'').endsWith('X'),direction,destination:destination??`${direction==='N'?'Northbound':'Southbound'} · destination unavailable`,time,stopId,stationId:station.id,stationName:station.name});
+   const remaining=updates.slice(updates.indexOf(s)+1).filter((u:any)=>u.scheduleRelationship!==1&&u.scheduleRelationship!==2);
+   const remainingTimes:Record<string,number>={};for(const u of remaining){const t=seconds(u.arrival?.time??u.departure?.time);if(t>=time&&t<=now+14400&&u.stopId)remainingTimes[u.stopId.replace(/[NS]$/,'')]=t;}
+   rows.push({remainingTimes,remainingStops:updates.slice(updates.indexOf(s)+1).filter((u:any)=>u.scheduleRelationship!==1&&u.scheduleRelationship!==2).map((u:any)=>(u.stopId??'').replace(/[NS]$/,'')),id,route,express:(trip.routeId??'').endsWith('X'),direction,travelDirection:travelDirection(stopId,updates.slice(updates.indexOf(s)+1).filter((u:any)=>u.scheduleRelationship!==1&&u.scheduleRelationship!==2).map((u:any)=>u.stopId??''),route),destination:destination??`${direction==='N'?'Northbound':'Southbound'} · destination unavailable`,time,stopId,stationId:station.id,stationName:station.name});
   }
  }
  return rows.sort((a,b)=>a.time-b.time);
@@ -36,7 +40,7 @@ async function getFeed(suffix:string):Promise<Feed>{
  cache.set(suffix,{at:Date.now(),promise});promise.catch(()=>{if(cache.get(suffix)?.promise===promise)cache.delete(suffix);});return promise;
 }
 export async function getArrivals(hubId:string):Promise<ArrivalResponse>{
- const hub=HUBS.find(h=>h.id===hubId);if(!hub)throw new Error('Unknown hub');
+ const hub=HUBS.find(h=>h.id===hubId)??networkHub(hubId);if(!hub)throw new Error('Unknown hub');
  const now=Math.floor(Date.now()/1000);const results=await Promise.allSettled(hub.feeds.map(getFeed));
  let missingFeeds=0;const timestamps:number[]=[];let arrivals:Arrival[]=[];
  for(const result of results){if(result.status==='rejected'){missingFeeds++;continue;}const ts=seconds(result.value.header.timestamp);if(!freshFeed(ts,now)){missingFeeds++;continue;}timestamps.push(ts);arrivals.push(...parseFeed(result.value,hub,now));}

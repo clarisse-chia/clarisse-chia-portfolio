@@ -1,6 +1,6 @@
-import {useEffect,useState} from 'react';
+import {lazy,Suspense,useEffect,useState} from 'react';
 import {ArrowUpRight,TrainFront,Plane,Sun,Github,Linkedin} from 'lucide-react';
-import Subway from './components/Subway';
+const Subway=lazy(()=>import('./components/Subway'));
 import Airspace from './components/Airspace';
 import CityWindow from './components/CityWindow';
 // Add future projects, including playable games, here with their own component.
@@ -22,7 +22,7 @@ export default function App(){
  <main><section className="hero portfolio-hero"><div><h1>Clarisse <span>Chia.</span></h1><p className="portfolio-tagline">building one project at a time; sometimes useful, always whimsy.</p></div></section>
  <section className="work-intro" id="work" aria-labelledby="work-title"><div><h2 id="work-title">Hey there Delilah, what's it like in New York City?</h2></div><p></p></section>
  <nav className="project-tabs" aria-label="Explore the New York collection">{projects.map(p=><button key={p.id} className={`project-tab ${project===p.id?'active':''}`} aria-pressed={project===p.id} onClick={()=>{setProject(p.id);window.history.replaceState(null,'',`#${p.id}`);}}><p.icon size={19}/><span><strong>{p.name}</strong></span></button>)}</nav>
- <section id="project" className="project-section" tabIndex={-1}><ActiveProject/></section>
+ <section id="project" className="project-section" tabIndex={-1}><Suspense fallback={<p className="source-note">Loading the map…</p>}><ActiveProject/></Suspense></section>
  </main>
  
  </div>;

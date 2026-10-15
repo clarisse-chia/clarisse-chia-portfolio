@@ -22,3 +22,8 @@ test('7 uses the shared numbered-line feed',()=>{for(const h of HUBS.filter(h=>h
 test('each stop has exactly one station owner within its neighborhood',()=>{for(const h of HUBS){const all=h.stations.flatMap(s=>s.stops);assert.equal(new Set(all).size,all.length,h.id);assert.equal(h.stations[0].walkMinutes,0);assert.ok(h.stations.every(s=>s.walkMinutes>=0&&s.walkMinutes<=10));}});
 test('same train at two neighborhood stations retains both named arrivals',()=>{const input=feed({trip:{routeId:'7'},stops:[{stopId:'725N',arrival:{time:now+60}},{stopId:'724N',arrival:{time:now+180}},{stopId:'701N',arrival:{time:now+900}}]});const rows=parseFeed(input,hub,now);assert.equal(rows.length,2);assert.notEqual(rows[0].id,rows[1].id);assert.equal(rows[0].stationName,'Times Sq–42 St');assert.equal(rows[1].stationId,'bryant-park');assert.equal(rows[1].stationName,'42 St–Bryant Pk / 5 Av');});
 test('neighborhood routes and feeds derive from their member stations',()=>{for(const h of HUBS){assert.deepEqual([...new Set(h.stations.flatMap(s=>s.routes))].sort(),[...h.routes].sort());assert.equal(new Set(h.feeds).size,h.feeds.length);}});
+
+test('downstream arrival predictions preserve timing and exclude skipped stops',()=>{
+ const result=parseFeed(feed({stops:[{stopId:'127N',arrival:{time:now+120}},{stopId:'126N',arrival:{time:now+180},scheduleRelationship:1},{stopId:'101N',arrival:{time:now+900}}]}),hub,now);
+ assert.equal(result[0].remainingTimes?.['101'],now+900);assert.equal(result[0].remainingTimes?.['126'],undefined);
+});

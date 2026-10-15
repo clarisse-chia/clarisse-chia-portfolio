@@ -5,3 +5,7 @@ dist/
 .env.*
 !.env.example
 .DS_Store
+
+# Local previews and linked dependencies
+node_modules
+work/

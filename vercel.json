@@ -12,6 +12,12 @@
     },
     "api/aircraft.ts": {
       "maxDuration": 15
+    },
+    "api/walking.ts": {
+      "maxDuration": 30
+    },
+    "api/addresses.ts": {
+      "maxDuration": 15
     }
   },
   "headers": [

@@ -148,3 +148,9 @@ Day cards use weekday, date, weather icon/description, and high/low temperatures
 The approved palette is moss and cream. Clarisse’s name appears once, above the exact tagline. The header contains only the social icons and About; the collection uses concise Weather, Subway, and Flights tabs. Repeated branding, footer slogans, and instructional copy have been removed.
 
 Subway and aircraft views use live feeds exclusively. Demo switches, synthetic data generators, and the simulated aircraft component have been removed. Legacy mode query parameters do not change the live view. Subway outages provide Try again; aircraft outages retain automatic backoff and Retry-After handling. No paid API or faster polling was introduced.
+
+## Full subway explorer and address directions
+
+The subway explorer includes all non-shuttle subway routes, searchable stations and NYC addresses, and approximate 5/10-minute nearby-station radii. Directions use live train predictions to estimate sequential waits, rides, and transfers. Leave-now, 15-minute, and 30-minute departure choices are limited to the available live feed horizon, not a full future timetable. Transfer walks and station access remain estimates. See ADDRESS_ROUTING.md for limitations, quotas, and data sources.
+
+Production address walking requires the server-only ORS_API_KEY environment variable in Vercel (copy the value from your private .env.local; never commit it). Address autocomplete and station-to-station arrivals do not need that key. The project has five API functions: arrivals, weather, aircraft, addresses, and walking.
