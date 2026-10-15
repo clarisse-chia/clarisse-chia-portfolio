@@ -1,4 +1,4 @@
-import data from './subwayExits.json';
+import data from './subwayExits.json' with {type:'json'};
 import {distanceMeters,type SuggestedExit} from '../src/data/journeyLocations.js';
 import {NETWORK_STATIONS} from '../src/data/subwayNetwork.js';
 type ExitRecord={stationId:string;lat:number;lon:number;type:string};
