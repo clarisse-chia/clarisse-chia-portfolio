@@ -31,3 +31,11 @@
 .journey-departure{border:0;padding:0;margin:20px 0}.journey-departure legend{font-size:10px;color:#c4d5b2;margin-bottom:9px}.journey-departure>div{display:flex;gap:5px}.journey-departure button{flex:1;border:1px solid #65755b;padding:10px 4px;font-size:10px}.journey-departure button[aria-pressed=true]{background:#b8d3a5;color:#142118}.journey-departure small,.journey-total-note{display:block;font-size:9px;line-height:1.7;color:#aabb9b;margin:8px 0 14px}.journey-platform-sign{border-left:3px solid #b8d3a5;padding:8px 10px;margin:12px 0;background:#101913}.journey-platform-sign>strong{font-size:16px;color:#edf3ce;line-height:1.5}.journey-platform-sign>small{font-size:8px;letter-spacing:1px;margin-bottom:5px}.journey-platform-sign>span{display:block;font-size:10px;color:#b5c4a7;line-height:1.7;margin-top:5px}.journey-clock{font-size:10px;margin:12px 0}.journey-clock>div{display:flex;justify-content:space-between;gap:8px;margin:9px 0}.journey-clock dd{margin:0;color:#e5e3c9;white-space:nowrap}.journey-clock dt{color:#b5c4a7}
 
 .journey-backups{border-top:1px solid #40503c;margin-top:14px;padding-top:12px}.journey-backup-times{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0}.journey-backup-times>span{flex:1;min-width:66px}.journey-backup-times strong{font-size:11px}.journey-backup-times small{margin-top:4px}.journey-backups h4{color:#c4d5b2}
+
+.group-train-controls{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+.journey-live>.journey-backups{display:block;border-bottom:0;padding:12px 0 0}
+.journey-backup-times{display:grid;grid-template-columns:repeat(auto-fit,minmax(66px,1fr));gap:12px;margin:10px 0 0}
+
+.current-location-control{padding:12px 22px;border-bottom:1px solid var(--line)}.current-location-control button{display:flex;align-items:center;gap:8px;font-size:10px;color:#c4d5b2;padding:5px 0}.current-location-control button:disabled{opacity:.6}.current-location-control p{font-size:10px;line-height:1.6;color:var(--muted);margin:8px 0 0}.current-location-control p:empty{display:none}
+
+.walking-directions-link{display:inline-block;margin-top:10px;font-size:10px;line-height:1.7;color:#c4d5b2;text-decoration:underline;text-underline-offset:3px}.walking-directions-link:hover{color:#edf3ce}
